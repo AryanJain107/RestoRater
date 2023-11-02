@@ -48,14 +48,12 @@ app.post("/register", (req, res) => {
         res.status(500).json({ message: "Database error. Please try again." });
       } else {
         if (results.length > 0) {
-          // Email already exists, send an error response with a custom message
           res
             .status(400)
             .json({
               message: "Email already exists. Please choose a different email.",
             });
         } else {
-          // If the email is unique, insert it into the database
           db.execute(
             "INSERT INTO users (email, name, password, role) VALUES (?, ?, ?, ?)",
             [email, name, password, role],
@@ -90,7 +88,7 @@ app.post("/login", (req, res) => {
         if (result.length > 0) {
           res.send(result);
         } else {
-          res.send({ message: "Wrong username/password combination!" }); // Return the error message here
+          res.send({ message: "Wrong username/password combination!" });
         }
       }
     }
@@ -109,7 +107,6 @@ app.post("/login", (req, res) => {
 //                 res.send({ err: err });
 //             } else {
 //                 if (result.length > 0) {
-//                     // If the email exists, check the password
 //                     if (result[0].password === password) {
 //                         res.send(result);
 //                     } else {
