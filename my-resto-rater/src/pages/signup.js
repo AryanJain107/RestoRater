@@ -1,6 +1,40 @@
 import React, { useState, useEffect } from "react";
 import "./login.css";
 import Axios from 'axios';
+import { Link } from "react-router-dom";
+import styled from 'styled-components';
+
+const OptionLink = styled(Link)`
+  background-color: #007BFF;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  margin: 0 10px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+const OptionLinkBack = styled(Link)`
+  background-color: red;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  margin: 0 10px;
+
+  &:hover {
+    background-color: #b30000;
+  }
+`;
 
 function SignUp() {
     const [name, setName] = useState("");
@@ -12,6 +46,10 @@ function SignUp() {
     const [redirectToLogin, setRedirectToLogin] = useState(false);
 
     const register = () => {
+        if (!name || !userEmail || !passwordReg) {
+            setRegistrationMessage("Please fill in all fields.");
+            return;
+        }
         Axios.post("http://localhost:3001/register", {
             name: name,
             email: userEmail,
@@ -80,7 +118,11 @@ function SignUp() {
                     <option value="owner">Owner</option>
                 </select>
                 <br />
-                <button onClick={register}>Register</button>
+                {/* <button onClick={register}>Register</button> */}
+                <OptionLink onClick={register}>Register</OptionLink>
+                <div style={{ marginTop: "20px" }}>
+                    <OptionLinkBack to="/">Go Back</OptionLinkBack>
+                </div>
                 <p>{registrationMessage}</p>
                 <p>{redirectingMessage}</p>
             </div>

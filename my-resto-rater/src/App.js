@@ -9,11 +9,17 @@ import {
 } from "react-router-dom";
 import * as ROUTES from "./routes";
 import SignUp from './pages/signup';
+import HomePage from './pages/HomePage';
+import { AuthProvider,useAuth } from "./pages/AuthContext";
+import Header from './pages/Header';
 
 
 function App() {
+  const { user, isAuthenticated, logout } = useAuth(); // Destructure the values from useAuth
+
   return (
     <Router>
+      {/* <Header user={user} isAuthenticated={isAuthenticated} logout={logout} /> */}
       <Routes>
         {/* <Route path={ROUTES.SIGN_UP} element={<Signin />} /> */}
         {/* <Route path={ROUTES.LOGIN} element={<Login />} /> */}
@@ -23,6 +29,7 @@ function App() {
         <Route path={ROUTES.HOME} element={<LandingPage />} />
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.SIGNUP} element={<SignUp />} />
+        <Route path="/homepage" element={<HomePage />} />
       </Routes>
     </Router>
   );
