@@ -1,7 +1,6 @@
-// LandingPage.js
 import styled from 'styled-components';
 import React from 'react';
-import { Link } from 'react-router-dom'; // If you're using React Router
+import { Link } from 'react-router-dom';
 
 const LandingPageContainer = styled.div`
   display: flex;

@@ -15,17 +15,11 @@ import Header from './pages/Header';
 
 
 function App() {
-  const { user, isAuthenticated, logout } = useAuth(); // Destructure the values from useAuth
+  const { user, isAuthenticated, logout } = useAuth(); 
 
   return (
     <Router>
-      {/* <Header user={user} isAuthenticated={isAuthenticated} logout={logout} /> */}
       <Routes>
-        {/* <Route path={ROUTES.SIGN_UP} element={<Signin />} /> */}
-        {/* <Route path={ROUTES.LOGIN} element={<Login />} /> */}
-        {/* <Route element={<PrivateRoute/>}>
-          <Route path={ROUTES.WEB_APP} element={<WebApp/>}/>
-        </Route> */}
         <Route path={ROUTES.HOME} element={<LandingPage />} />
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.SIGNUP} element={<SignUp />} />

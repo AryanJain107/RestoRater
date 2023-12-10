@@ -13,7 +13,6 @@ import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper 
 
 const HomePage = () => {
   const { user, isAuthenticated, logout } = useAuth();
-  // const isOwner = user.role === "owner";
   const style = {
     position: 'absolute',
     top: '50%',
@@ -48,14 +47,12 @@ const HomePage = () => {
   });
 
   const [open, setOpen] = React.useState(false);
-  // const handleOpen = () => setOpen(true);
   const handleOpen = () => {
-    setErrorMessage(""); // Clear any previous error messages
+    setErrorMessage("");
     setOpen(true);
   };
-  // const handleClose = () => setOpen(false);
   const handleClose = () => {
-    setErrorMessage(""); // Clear any previous error messages
+    setErrorMessage("");
     setRestaurantDetails({
       name: "",
       cuisineType: "",
@@ -71,17 +68,16 @@ const HomePage = () => {
     );
   
     if (isFieldsValid) {
-      // Assuming ownerId is obtained from the logged-in user
-      const ownerId = user.userId; // Adjust this based on your actual user structure
+      const ownerId = user.userId; 
   
-      // Make an API request to add the restaurant
+      
       Axios.post("http://localhost:3001/addRestaurant", {
         ...restaurantDetails,
         ownerId,
       })
         .then((response) => {
           console.log(response.data.message);
-          // Reset restaurant details after adding
+          
           setRestaurantDetails({
             name: "",
             cuisineType: "",
@@ -90,17 +86,17 @@ const HomePage = () => {
             numDishes: "",
           });
   
-          // Close the modal
+          
           handleClose();
           window.location.reload(false);
         })
         .catch((error) => {
           console.error("Error adding restaurant:", error);
-          // Display an error message
+          
           setErrorMessage("Failed to add restaurant. Please try again.");
         });
     } else {
-      // Display an error message
+      
       setErrorMessage("All fields are required.");
     }
   };
@@ -109,12 +105,10 @@ const HomePage = () => {
 
 
   const handleOpenEditModal = () => {
-    // Fetch owner's restaurants
+    
     Axios.get(`http://localhost:3001/ownerrestaurants?ownerId=${user.userId}`)
       .then((response) => {
         setOwnerRestaurants(response.data);
-
-        // Initialize editedRestaurants object with the values of each restaurant
         const initialEditedRestaurants = {};
         response.data.forEach((restaurant) => {
           initialEditedRestaurants[restaurant.restId] = { ...restaurant };
@@ -145,29 +139,10 @@ const HomePage = () => {
     }));
   };
 
-
-
-
-
-  // const handleEditRestaurant = (restaurant) => {
-  //   // Set the initial state of editedRestaurant with the values of the selected restaurant
-  //   setEditedRestaurant({
-  //     restId: restaurant.restId,
-  //     name: restaurant.name,
-  //     cuisineType: restaurant.cuisineType,
-  //     city: restaurant.city,
-  //     state: restaurant.state,
-  //     numDishes: restaurant.numDishes,
-  //   });
-  //   setOpenEditModal(true);
-  // };
   const handleEditRestaurant = (restaurant) => {
-    // Assuming editedRestaurant has the updated details
     const updatedDetails = editedRestaurants[restaurant.restId];
-    // console.log(updatedDetails)
-      // Check if any field is empty
+
   if (Object.values(updatedDetails).some((value) => {
-    // Convert numbers to string before calling trim
     const trimmedValue = typeof value === 'number' ? String(value) : value;
     return trimmedValue.trim() === "";
   })) {
@@ -175,17 +150,14 @@ const HomePage = () => {
     return;
   }
   
-    // Make an API request to update the restaurant details
     Axios.put(`http://localhost:3001/updateRestaurant/${restaurant.restId}`, updatedDetails)
       .then((response) => {
         console.log(response.data.message);
-        // Close the edit modal after making changes
         handleCloseEditModal();
-        window.location.reload(false); // You may consider updating the state instead of reloading the entire page
+        window.location.reload(false);
       })
       .catch((error) => {
         console.error("Error updating restaurant:", error);
-        // Display an error message
         setErrorMessage("Failed to update restaurant. Please try again.");
       });
   };
@@ -201,15 +173,15 @@ const HomePage = () => {
       },
     }));
   };
-  const [selectedRating, setSelectedRating] = useState(""); // State for selected rating
-  const [selectedCuisine, setSelectedCuisine] = useState(""); // State for selected cuisine type
+  const [selectedRating, setSelectedRating] = useState(""); 
+  const [selectedCuisine, setSelectedCuisine] = useState(""); 
   const [cuisineTypes, setCuisineTypes] = useState([]);
   const [searchedRestaurantName, setSearchedRestaurantName] = useState("");
   const [searchedOwnerName, setSearchedOwnerName] = useState("");
 
 
   useEffect(() => {
-    // Fetch distinct cuisine types
+    
     Axios.get("http://localhost:3001/cuisineTypes")
       .then((response) => {
         setCuisineTypes(response.data);
@@ -217,11 +189,11 @@ const HomePage = () => {
       .catch((error) => {
         console.error("Error fetching cuisine types:", error);
       });
-  }, []); // The empty dependency array ensures this effect runs only once when the component mounts
+  }, []);
   
   const [ratingTypes, setRatingTypes] = useState([]);
   useEffect(() => {
-    // Fetch distinct cuisine types
+    
     Axios.get("http://localhost:3001/ratingTypes")
       .then((response) => {
         setRatingTypes(response.data);
@@ -229,12 +201,11 @@ const HomePage = () => {
       .catch((error) => {
         console.error("Error fetching rating types:", error);
       });
-  }, []); // The empty dependency array ensures this effect runs only once when the component mounts
+  }, []); 
   
 
   const [openRemoveModal, setOpenRemoveModal] = useState(false);
   const handleOpenRemoveModal = () => {
-    // Similar to editing, fetch owner's restaurants
     Axios.get(`http://localhost:3001/ownerrestaurants?ownerId=${user.userId}`)
       .then((response) => {
         setOwnerRestaurants(response.data);
@@ -253,19 +224,16 @@ const HomePage = () => {
     setOpenRemoveModal(false);
   };
   const handleRemoveRestaurant = (restaurant) => {
-    // Make an API request to remove the restaurant
     Axios.delete(
       `http://localhost:3001/removeRestaurant/${restaurant.restId}`
     )
       .then((response) => {
         console.log(response.data.message);
-        // Close the remove modal after making changes
         handleCloseRemoveModal();
-        window.location.reload(false); // You may consider updating the state instead of reloading the entire page
+        window.location.reload(false);
       })
       .catch((error) => {
         console.error("Error removing restaurant:", error);
-        // Display an error message
         setErrorMessage(
           "Failed to remove restaurant. Please try again."
         );
